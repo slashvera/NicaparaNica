@@ -1,6 +1,6 @@
 #El serializador es el que nos permite transformar lo que son los objetos de Django a formatos como JSON o XML
 from rest_framework import serializers
-from main.models import Student, Tutor, Curso, Matricula, Notas
+from main.models import Student, Tutor, Curso, Matricula, Nota
 
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -22,7 +22,7 @@ class MatriculaSerializer(serializers.ModelSerializer):
         model = Matricula
         fields = '__all__'
 
-class NotasSerializer(serializers.ModelSerializer):
+class NotaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Notas
+        model = Nota
         fields = '__all__'
