@@ -17,6 +17,9 @@ class Student(models.Model):
     class Meta:
         db_table = 'student'
 
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+
 #=========================== 2. Modelo tutor : Vinculado a auth_user
 class Tutor(models.Model):
     id_tutor = models.AutoField(primary_key=True)
@@ -30,6 +33,9 @@ class Tutor(models.Model):
 
     class Meta:
         db_table = 'tutor'
+    
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
 
 
 #=========================== 3. Modelo Curso
@@ -46,6 +52,9 @@ class Curso(models.Model):
 
     class Meta:
         db_table = 'curso'
+    
+    def __str__(self):
+        return f"{self.nombre_curso} "
 
 #======================= 4. Matricula Modelo
 class Matricula(models.Model):
@@ -58,6 +67,9 @@ class Matricula(models.Model):
 
     class Meta:
         db_table = 'matricula'
+
+    def __str__(self):
+        return f"Matricula {self.id_matricula} - Curso {self.id_curso}"
 
 #======================= 5. Notas Modelo
 class Nota(models.Model):
