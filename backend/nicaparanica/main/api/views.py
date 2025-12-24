@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
 from main.models import Student, Tutor, Curso, Matricula, Nota
 from .serializer import StudentSerializer, TutorSerializer, CursoSerializer, MatriculaSerializer, NotaSerializer #importamos los Serializers
 
@@ -7,6 +8,7 @@ from .serializer import StudentSerializer, TutorSerializer, CursoSerializer, Mat
 #Un ModelViewSet es una clase proporcionada por Django REST Framework que combina la funcionalidad de un ViewSet con la de un modelo específico. Permite crear automáticamente vistas para operaciones CRUD (Crear, Leer, Actualizar, Eliminar) basadas en un modelo de Django, simplificando el proceso de desarrollo de API RESTful.
 
 class StudentViewSet(viewsets.ModelViewSet):
+    #permission_classes = [IsAuthenticated] #protege la vista con autenticacion
     queryset = Student.objects.all() #trae todos los registros
     serializer_class = StudentSerializer;#asignamos el serializador
 
