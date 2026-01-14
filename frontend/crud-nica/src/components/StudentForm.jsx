@@ -40,87 +40,106 @@ export default function StudentForm() {
         navigate('/');//Redirigir al usuario a la pagina principal
     }
 
-
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
-                        Name:
-                    </label>
-                    <input
-                        value={student.first_name}
-                        type="text"
-                        onChange={(e) => setStudent({ ...student, first_name: e.target.value })}//capturar el valor del input
-                        id="name"
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    />
-                </div>
+  <div className="bg-white text-black flex justify-center items-center min-h-screen">
+    <form onSubmit={handleSubmit} className="w-full max-w-md">
 
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="lastname">
-                        Last Name:
-                    </label>
-                    <input
-                        value={student.last_name}
-                        type="text"
-                        onChange={(e) => setStudent({ ...student, last_name: e.target.value })}//capturar el valor del input
-                        id="lastname"
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    />
-                </div>
-                
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-                        Email:
-                    </label>
-                    <input
-                        value={student.correo_std}
-                        type="email"
-                        onChange={(e) => setStudent({ ...student, correo_std: e.target.value })}//capturar el valor del input
-                        id="email"
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    />
-                </div>
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="Birthdate">
-                        Birthdate:
-                    </label>
-                    <input
-                        value={student.fecha_nac}
-                        type="date"
-                        onChange={(e) => setStudent({ ...student, fecha_nac: e.target.value })}//capturar el valor del input
-                        id="Birthdate"
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    />
-                </div>
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="city">
-                        City:
-                    </label>
-                    <input
-                        value={student.city_std}
-                        type="text"
-                        onChange={(e) => setStudent({ ...student, city_std: e.target.value })}//capturar el valor del input
-                        id="city"
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    />
-                </div>
+      <div className="mb-4">
+        <label className="block text-sm font-bold mb-2" htmlFor="name">
+          Name:
+        </label>
+        <input
+          value={student.first_name}
+          type="text"
+          onChange={(e) =>
+            setStudent({ ...student, first_name: e.target.value })
+          }
+          id="name"
+          className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
+        />
+      </div>
 
-                <div>
-                    <button
-                        type="submit"
-                        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    >   
-                        Submit
-                    </button>
+      <div className="mb-4">
+        <label className="block text-sm font-bold mb-2" htmlFor="lastname">
+          Last Name:
+        </label>
+        <input
+          value={student.last_name}
+          type="text"
+          onChange={(e) =>
+            setStudent({ ...student, last_name: e.target.value })
+          }
+          id="lastname"
+          className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
+        />
+      </div>
 
-                    <button type="reset" className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-2">
-                        Cancel
-                    </button>
-                </div>
+      <div className="mb-4">
+        <label className="block text-sm font-bold mb-2" htmlFor="email">
+          Email:
+        </label>
+        <input
+          value={student.correo_std}
+          type="email"
+          onChange={(e) =>
+            setStudent({ ...student, correo_std: e.target.value })
+          }
+          id="email"
+          className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
+        />
+      </div>
 
-            </form>
-        </div>
-    )
+      <div className="mb-4">
+        <label className="block text-sm font-bold mb-2" htmlFor="Birthdate">
+          Birthdate:
+        </label>
+        <input
+          value={student.fecha_nac}
+          type="date"
+          onChange={(e) =>
+            setStudent({ ...student, fecha_nac: e.target.value })
+          }
+          id="Birthdate"
+          className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
+        />
+      </div>
+
+      <div className="mb-4">
+        <label className="block text-sm font-bold mb-2" htmlFor="city">
+          City:
+        </label>
+        <select
+          value={student.city_std}
+          onChange={(e) =>
+            setStudent({ ...student, city_std: e.target.value })
+          }
+          className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
+        >
+            <option value="Managua">Managua</option>
+            <option value="Masaya">Masaya</option>
+        </select>
+       
+      </div>
+
+      <div className="mt-4 flex gap-2">
+        <button
+          type="submit"
+          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+          Submit
+        </button>
+
+        <button
+          type="reset"
+          onClick={() => navigate('/')}
+          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+          Cancel
+        </button>
+      </div>
+
+    </form>
+  </div>
+);
+    
 }

@@ -3,6 +3,7 @@ import {BrowserRouter,Route,Routes} from 'react-router'
 import StudentList from './components/StudentList'
 import StudentForm from './components/StudentForm'
 import Header from './components/Header'
+import RegisterForm from './components/RegisterForm'
 
 function App() {
 
@@ -13,10 +14,9 @@ function App() {
         <Header />
 
         <Routes>
-          <Route path='/' element={<StudentList/>}/>
+          <Route path='/' element={<RegisterForm/>}/>
           <Route path='/new-student' element={<StudentForm/>}/>
           <Route path='/edit-student/:id_std' element={<StudentForm/>}/>
-          
         </Routes>
       </div>
     </BrowserRouter>
