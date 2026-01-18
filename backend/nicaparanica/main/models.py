@@ -3,6 +3,12 @@ from django.contrib.auth.models import User # importamos el usuario nativo de Dj
 
 #1. Modelo Estudiante : Vinculado a auth_user
 class Student(models.Model):
+
+    gender_choices = [
+        ('M','Male'),
+        ('F','Female'),
+        ('O','Other'),
+    ]
     id_std = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
@@ -10,7 +16,11 @@ class Student(models.Model):
     fecha_nac = models.DateField(blank=True, null=True)
     city_std = models.CharField(max_length=100, blank=True, null=True)
     is_active = models.BooleanField(default=True)
-    
+
+    gender = models.CharField(
+        max_length=1, choices=gender_choices,
+        default='O'
+    )
     #Esta es la conexion con el usuario nativo de Django
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='student_profile')
 

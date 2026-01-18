@@ -2,6 +2,7 @@ import { getStudents } from "../api/students";
 import { useState } from "react";//Importamos useState para manejar el estado del componente
 import { useEffect } from "react";//Importar useEffect para manejar la obtención de datos 
 import {useNavigate, useParams} from 'react-router';//Importar useNavigate para redirigir al usuario
+import { Link } from 'react-router-dom';
 
 export default function StudentList() {
     const navigate = useNavigate();
@@ -26,13 +27,23 @@ export default function StudentList() {
     return(
         //mt =.. margin top, ml=.. margin left
         <div className="mt-8">
-            <h1 className="text-2xl font-bold text-sky-700 ml-5">Listado de Estudiantes</h1>
+
+            <div className="container mx-auto flex justify-between items-center">
+                <h1 className="text-2xl font-bold text-sky-700 ml-5">Listado de Estudiantes</h1>
+                <Link to="/new-student" className="bg-green-700 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-5 rounded">
+                            Add New Student
+                </Link>
+            </div>
+            
+            
             <div className="grid grid-cols-1 md:grid-cols-3 mt-5 gap-5 ml-5">
                 { students.map((student) => (
                     <div key={student.id} className="bg-blue-300 shadow-md rounded-md p-4 mt-4">
+                        <p className="font-normal  text-gray-800"><span className="font-bold">ID: </span>{student.id_std}</p>
                         <p className=" font-normal text-gray-800"><span className="font-bold">Nombre: </span>{student.first_name}</p>
                         <p className=" font-normal text-gray-800"><span className="font-bold">Apellido: </span>{student.last_name}</p>
                         <p className=" font-normal text-gray-800"><span className="font-bold">Correo: </span>{student.correo_std}</p>
+                        <p className="font-normal text-gray-800"><span className="font-bold">Genero: </span>{student.gender_display}</p>
                         <p className=" font-normal text-gray-800"><span className="font-bold">Ciudad: </span>{student.city_std}</p>
                         <div className="mt-3">
                             <button className="bg-green-700 text-white px-2 py-1 rounded-lg hover:bg-green-500"

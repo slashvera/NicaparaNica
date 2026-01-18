@@ -3,18 +3,21 @@ import { useEffect } from "react";//Importar useEffect para manejar la obtenció
 import { useNavigate, useParams } from "react-router";//Importar useNavigate para redirigir al usuario
 import { createStudent,getStudent,updateStudent } from "../api/students";//Importar la función para crear un nuevo estudiante
 
+
 export default function StudentForm() {
 
     const [student, setStudent] = useState({
         first_name: '',
         last_name: '',
+        gender:'',
         correo_std: '',
         fecha_nac: '',
-        city_std: ''
+        city_std: '',
     });
 
     const navigate = useNavigate();
-    const params = useParams();//Obtenemos los parámetros de la URL (aunque no se usan en este componente) 
+    const params = useParams();//Obtenemos los parámetros de la URL (aunque no se usan en este componente)
+    const {notifySuccess, notifyError} = useNotify();//Desestructuramos las funciones de notificación desde el hook personalizado useNotify 
 
     useEffect(() => {
         // Aquí podríamos cargar los datos del estudiante si estuviéramos editando uno existente
@@ -74,6 +77,25 @@ export default function StudentForm() {
         />
       </div>
 
+
+      <div className="mb-4">
+        <label className="block text-sm font-bold mb-2" htmlFor="gender">
+          Gender:
+        </label>
+
+        <select
+          value={student.gender}
+          onChange={(e) =>
+            setStudent({ ...student, gender: e.target.value })
+          }
+          className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
+        >
+          <option value="M">Male</option>
+          <option value="F">Female</option>
+          <option value="O">Other</option>
+        </select>
+      </div>
+
       <div className="mb-4">
         <label className="block text-sm font-bold mb-2" htmlFor="email">
           Email:
@@ -124,7 +146,7 @@ export default function StudentForm() {
       <div className="mt-4 flex gap-2">
         <button
           type="submit"
-          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline duration-200 cursor-pointer"
         >
           Submit
         </button>
@@ -132,7 +154,7 @@ export default function StudentForm() {
         <button
           type="reset"
           onClick={() => navigate('/')}
-          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline duration-200 cursor-pointer"
         >
           Cancel
         </button>

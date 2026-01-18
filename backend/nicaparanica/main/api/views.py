@@ -14,7 +14,7 @@ class RegisterUserViewSet(viewsets.ModelViewSet):
         if self.action == 'create':
             return [AllowAny()]  # Permitir acceso sin autenticación para la acción de creación
         # Para ver la lista (GET) o borrar, pedimos estar logueado
-        return [IsAuthenticated()]  # Requerir autenticación para otras acciones
+        return [AllowAny()]  # Requerir autenticación para otras acciones
 
 
 class StudentViewSet(viewsets.ModelViewSet):

@@ -1,19 +1,24 @@
-import {Link} from 'react-router'
+import React from 'react';
+import { FaRegUserCircle } from "react-icons/fa";
+import { useState } from 'react';
+
 
 export default function Header() {
+    const [darkMode, setDarkMode] = useState(false);
     return (
-        <nav className="bg-gray-700 text-white py-4 mb-2">
-                <h1 className="text-2xl font-bold ml-3">Student Management System</h1>
-
-                <div className="container mx-auto flex justify-between items-center">
-                    <Link to="/" className="text-white hover:text-blue-700 mx-2 text-2xl ml-3">Home</Link>
-                    <div>
-                        <Link to="/new-student" className="bg-green-700 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-5 rounded">
-                            Add New Student
-                        </Link>
-                    </div>
-
+        <header className='bg-white flex justify-between items-center p-4 shadow-sm border-b border-gray-100 h-20'>
+            <h1 className='text-2xl font-bold'>Dashboard</h1>
+            <div className='flex items-center gap-4'>
+                <span className='text-sm text-gray-500'>Hola, Admin</span>
+                
+                <div className='bg-blue-500 w-10 h-10 rounded-full flex items-center justify-center text-white font-bold'>
+                    <FaRegUserCircle className='text-white text-xl' />
                 </div>
-        </nav>
-    )
-}   
+
+                <div className='flex justify-center'>
+                    {darkMode ? <button onClick={() => setDarkMode(false)} className='bg-yellow-400 p-2 rounded-full'>🌞</button> : <button onClick={() => setDarkMode(true)} className='bg-gray-800 p-2 rounded-full'>🌙</button   >}
+                </div>
+            </div>
+        </header>
+    );
+}
