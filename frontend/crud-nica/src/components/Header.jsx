@@ -9,7 +9,7 @@ export default function Header() {
         <header className='bg-white flex justify-between items-center p-4 shadow-sm border-b border-gray-100 h-20'>
             <h1 className='text-2xl font-bold'>Dashboard</h1>
             <div className='flex items-center gap-4'>
-                <span className='text-sm text-gray-500'>Hola, Admin</span>
+                <span className='text-sm text-gray-500'>Hey There!, Admin</span>
                 
                 <div className='bg-blue-500 w-10 h-10 rounded-full flex items-center justify-center text-white font-bold'>
                     <FaRegUserCircle className='text-white text-xl' />

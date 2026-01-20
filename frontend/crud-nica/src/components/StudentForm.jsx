@@ -17,7 +17,6 @@ export default function StudentForm() {
 
     const navigate = useNavigate();
     const params = useParams();//Obtenemos los parámetros de la URL (aunque no se usan en este componente)
-    const {notifySuccess, notifyError} = useNotify();//Desestructuramos las funciones de notificación desde el hook personalizado useNotify 
 
     useEffect(() => {
         // Aquí podríamos cargar los datos del estudiante si estuviéramos editando uno existente
@@ -46,6 +45,10 @@ export default function StudentForm() {
     return (
   <div className="bg-white text-black flex justify-center items-center min-h-screen">
     <form onSubmit={handleSubmit} className="w-full max-w-md">
+
+      <div className="mb-6 text-2xl font-bold text-center">
+        <h1>Formulario de Estudiante</h1>
+      </div>
 
       <div className="mb-4">
         <label className="block text-sm font-bold mb-2" htmlFor="name">
@@ -153,7 +156,7 @@ export default function StudentForm() {
 
         <button
           type="reset"
-          onClick={() => navigate('/')}
+          onClick={() => navigate('/students')}
           className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline duration-200 cursor-pointer"
         >
           Cancel

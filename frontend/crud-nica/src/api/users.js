@@ -5,3 +5,4 @@ const userApi = axios.create({
 })
 
 export const getUser = () => userApi.get();
+export const createUser = (user) => userApi.post('', user);

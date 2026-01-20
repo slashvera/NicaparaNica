@@ -30,7 +30,7 @@ export default function StudentList() {
 
             <div className="container mx-auto flex justify-between items-center">
                 <h1 className="text-2xl font-bold text-sky-700 ml-5">Listado de Estudiantes</h1>
-                <Link to="/new-student" className="bg-green-700 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-5 rounded">
+                <Link to="/new-student" className="bg-green-700 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-5 rounded duration-300">
                             Add New Student
                 </Link>
             </div>
