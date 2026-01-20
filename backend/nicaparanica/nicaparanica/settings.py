@@ -85,7 +85,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'nicaproyecto',
         'USER': 'root',
-        'PASSWORD': 'root123',
+        'PASSWORD': 'kfchm',
         'HOST': 'localhost',
         'PORT': '3306',
     }

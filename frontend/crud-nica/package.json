@@ -12,6 +12,7 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
     "axios": "^1.13.2",
+    "package.json": "^2.0.1",
     "primereact": "^10.9.7",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

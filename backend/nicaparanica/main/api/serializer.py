@@ -23,6 +23,11 @@ class StudentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class TutorSerializer(serializers.ModelSerializer):
+    
+    gender_display = serializers.CharField(
+        source='get_gender_display',
+        read_only=True
+    ) 
     class Meta:
         model = Tutor 
         fields = '__all__'

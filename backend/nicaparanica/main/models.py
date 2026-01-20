@@ -32,11 +32,23 @@ class Student(models.Model):
 
 #=========================== 2. Modelo tutor : Vinculado a auth_user
 class Tutor(models.Model):
+    
+    gender_choices = [
+        ('M','Male'),
+        ('F','Female'),
+        ('O','Other'),
+    ]
+     
     id_tutor = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     correo_tutor = models.EmailField(max_length=150, blank=True, null=True)
     is_active = models.BooleanField(default=True)
+    
+    gender = models.CharField(
+        max_length=1, choices=gender_choices,
+        default='O'
+    )
 
     #Esta es la conexion con el usuario nativo de Django
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='tutor_profile')
