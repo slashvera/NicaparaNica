@@ -50,12 +50,12 @@ export default function TutorList() {
                         </p>
                         <div className="mt-3">
                             <button className="bg-green-700 text-white px-2 py-1 rounded-lg hover:bg-green-500"
-                                onClick={() => navigate(`/edit-tutor/${tutor.id_std}`)}
+                                onClick={() => navigate(`/edit-tutor/${tutor.id_tutor}`)}
 
                             >Editar</button>
 
                             <button className="bg-red-700 text-white px-2 py-1 rounded-lg ml-2 hover:bg-red-500"
-                                onClick={() => navigate(`/delete-tutor/${tutor.id_std}`)}
+                                onClick={() => navigate(`/delete-tutor/${tutor.id_tutor}`)}
                             >Eliminar</button>
                         </div>
                     </div>

@@ -1,16 +1,16 @@
 import { useState } from "react";//Importamos useState para manejar el estado del componente
 import { useEffect } from "react";//Importar useEffect para manejar la obtención de datos 
-import { useNavigate, useParams } from "react-router";//Importar useNavigate para redirigir al usuario
+import { useNavigate, useParams } from "react-router-dom";//Importar useNavigate para redirigir al usuario
 import { createTutor,getTutor,updateTutor } from "../api/tutors";//Importar la función para crear un nuevo docente
 
 
-export default function TutorsForm() {
+export default function TutorForm() {
 
     const [tutor, setTutor] = useState({
         first_name: '',
         last_name: '',
         gender:'',
-        email:'',
+        correo_tutor:'',
         status:''
     });
 
@@ -103,10 +103,10 @@ export default function TutorsForm() {
                 Email:
                 </label>
                 <input
-                value={tutor.email}
+                value={tutor.correo_tutor}
                 type="email"
                 onChange={(e) =>
-                    setTutor({ ...tutor, email: e.target.value })
+                    setTutor({ ...tutor, correo_tutor: e.target.value })
                 }
                 id="email"
                 className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
