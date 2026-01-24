@@ -34,9 +34,7 @@ export default function TutorList() {
                             Add New Tutor
                 </Link> 
             </div>
-            
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 mt-5 gap-5 ml-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-5 gap-5 ml-5">
                 { tutors.map((tutor) => (
                     <div key={tutor.id_tutor} className="bg-blue-300 shadow-md rounded-md p-4 mt-4">
                         <p className="font-normal  text-gray-800"><span className="font-bold">ID: </span>{tutor.id_tutor}</p>

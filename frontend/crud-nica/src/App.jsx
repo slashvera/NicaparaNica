@@ -9,7 +9,6 @@ import RegisterForm from './components/RegisterForm'
 import MainLayout from './components/layouts/dashboard'
 import Maincomponent from './components/Maincomponent'
 import Notfound from './components/Notfound'
-import CreateStudentWizard from './pages/CreateStudentWizard'
 import { Toaster } from 'react-hot-toast'
 import { PiUserList } from 'react-icons/pi'
 
@@ -22,7 +21,9 @@ function App() {
           {/* MainLayout es el contenedor principal */}
           <Route path='/' element={<MainLayout/>}>
             {/* Las rutas hijas NO deben llevar "/" al inicio del path */}
-            <Route index element={<UserList/>}/>
+
+            <Route index element={<Maincomponent/>}/>
+
             <Route path="new-student" element={<StudentForm/>}/>
 
             <Route path="new-tutor" element={<TutorForm/>}/>
