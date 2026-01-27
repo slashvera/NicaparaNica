@@ -2,9 +2,11 @@ import { useState } from "react"; //Importamos useState para manejar el estado d
 import { useEffect } from "react"; //Importar useEffect para manejar la obtención de datos
 import { useNavigate, useParams } from "react-router"; //Importar useNavigate para redirigir al usuario
 import { createTutor, getTutor, updateTutor } from "../api/tutors"; //Importar la función para crear un nuevo estudiante
-import { getUser } from "../api/users";//Importamos APi de usuarios
+import { getUsers } from "../api/users";//Importamos APi de usuarios
+import { useNotify } from "../hook/useNotify";
 
 export default function TutorForm() {
+  const notify = useNotify();
   const navigate = useNavigate();
   const params = useParams(); //Obtenemos los parámetros de la URL (aunque no se usan en este componente)
 
@@ -25,7 +27,7 @@ export default function TutorForm() {
   useEffect(() => {
     const loadUsers = async () => {
       try {
-        const res = await getUser();
+        const res = await getUsers();
         //console.log("USERS:", res.data);
         setUsers(res.data);
       } catch (error) {
@@ -41,24 +43,40 @@ export default function TutorForm() {
       if (params.id_tutor) {
         //validar si es una creación o edición
         const response = await getTutor(params.id_tutor);
-        setTutor(response.data); //Actualizar el estado con los datos del estudiante a editar
+        setTutor(response.data); //Actualizar el estado con los datos del tutor a editar
       }
     };
-    loadTutor(); //Llamar a la función para cargar los datos del estudiante
+    loadTutor(); //Llamar a la función para cargar los datos del tutor
   }, [params.id_tutor]);
 
   const handleSubmit = async (e) => {
-    //funcion para manejar el envio del formulario
-    e.preventDefault(); //No envia el formulario de forma tradicional
-    if (params.id_tutor) {
-      //Seria una edicion de estudiante existente
-      await updateTutor(params.id_tutor, tutor); //Llamar a la funcion updateStudent para actualizar el estudiante
-    } else {
-      //Seria la creacion de un nuevo estudiante
-      await createTutor(tutor); //Llamar a la funcion createStudent para crear un nuevo estudiante
+    e.preventDefault(); // Evita el envío tradicional
+
+    // Validar campos vacíos
+    if (!tutor.first_name || !tutor.last_name || !tutor.gender || !tutor.correo_tutor || !tutor.user) {
+      notify.error("Todos los campos son obligatorios");
+      return;
     }
-    navigate("/"); //Redirigir al usuario a la pagina principal
+
+    // Validar formato de correo
+    const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!regexEmail.test(tutor.correo_tutor)) {
+      notify.error("El correo electrónico no es válido");
+      return;
+    }
+
+    // Si pasa las validaciones, decide si es edición o creación
+    if (params.id_tutor) {
+      await updateTutor(params.id_tutor, tutor);
+      notify.success("Tutor actualizado correctamente");
+    } else {
+      await createTutor(tutor);
+      notify.success("Tutor creado correctamente");
+    }
+
+    navigate("/"); // Redirigir al usuario
   };
+
 
   return (
     <div className="bg-white text-black flex justify-center items-center min-h-screen">

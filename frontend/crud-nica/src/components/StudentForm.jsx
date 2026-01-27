@@ -2,7 +2,7 @@ import { useState } from "react"; //Importamos useState para manejar el estado d
 import { useEffect } from "react"; //Importar useEffect para manejar la obtención de datos
 import { useNavigate, useParams } from "react-router"; //Importar useNavigate para redirigir al usuario
 import { createStudent, getStudent, updateStudent } from "../api/students"; //Importar la función para crear un nuevo estudiante
-import { getUser } from "../api/users";//Importamos APi de usuarios
+import { getUsers } from "../api/users";//Importamos APi de usuarios
 
 export default function StudentForm() {
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ export default function StudentForm() {
   useEffect(() => {
     const loadUsers = async () => {
       try {
-        const res = await getUser();
+        const res = await getUsers();
         //console.log("USERS:", res.data);
         setUsers(res.data);
       } catch (error) {
