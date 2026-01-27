@@ -24,7 +24,7 @@ export default function UserList() {
     return (
         <div className="mt-8">
             <h1 className="text-2xl font-bold text-sky-700 ml-5">Listado de Usuarios</h1>
-            <div className="grid grid-cols-1 md:grid-cols-3 mt-5 gap-5 ml-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-5 gap-5 ml-5">
                 { users.map((user) => (
                     <div key={user.id} className="bg-blue-300 shadow-md rounded-md p-4 mt-4">
                         <p className="font-normal  text-gray-800"><span className="font-bold">ID: </span>{user.id}</p>
