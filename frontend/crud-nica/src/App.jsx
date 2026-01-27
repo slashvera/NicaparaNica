@@ -6,11 +6,14 @@ import StudentList from './components/StudentList'
 import TutorForm from './components/TutorForm'
 import StudentForm from './components/StudentForm'
 import RegisterForm from './components/RegisterForm'
+import CursoList from './components/CursoList'
 import MainLayout from './components/layouts/dashboard'
 import Maincomponent from './components/Maincomponent'
 import Notfound from './components/Notfound'
 import { Toaster } from 'react-hot-toast'
 import { PiUserList } from 'react-icons/pi'
+import CursoForm from './components/CursoForm'
+
 
 function App() {
   return (
@@ -36,10 +39,14 @@ function App() {
             
             {/* Si en StudentList navegas a /edit-user/, aquí debe decir edit-user */}
             <Route path="edit-user/:id_user" element={<RegisterForm/>}/>
+
+            <Route path='edit-course/:id_curso' element={<CursoForm/>}/>
             
             <Route path="students" element={<StudentList/>}/>
 
             <Route path="teachers" element={<TutorList/>}/>
+
+            <Route path='courses' element={<CursoList/>}></Route>
 
             <Route path="*" element={<Notfound/>}/>
           </Route>

@@ -1,10 +1,13 @@
-import { useState } from "react"; //Importamos useState para manejar el estado del componente
+import { use, useState } from "react"; //Importamos useState para manejar el estado del componente
 import { useEffect } from "react"; //Importar useEffect para manejar la obtención de datos
 import { useNavigate, useParams } from "react-router"; //Importar useNavigate para redirigir al usuario
 import { createStudent, getStudent, updateStudent } from "../api/students"; //Importar la función para crear un nuevo estudiante
 import { getUser } from "../api/users";//Importamos APi de usuarios
+import { useNotify } from "../hook/useNotify";
 
 export default function StudentForm() {
+
+  const notify  = useNotify();
   const navigate = useNavigate();
   const params = useParams(); //Obtenemos los parámetros de la URL (aunque no se usan en este componente)
 
@@ -50,16 +53,40 @@ export default function StudentForm() {
   }, [params.id_std]);
 
   const handleSubmit = async (e) => {
-    //funcion para manejar el envio del formulario
-    e.preventDefault(); //No envia el formulario de forma tradicional
-    if (params.id_std) {
-      //Seria una edicion de estudiante existente
-      await updateStudent(params.id_std, student); //Llamar a la funcion updateStudent para actualizar el estudiante
-    } else {
-      //Seria la creacion de un nuevo estudiante
-      await createStudent(student); //Llamar a la funcion createStudent para crear un nuevo estudiante
+    e.preventDefault();
+
+    // IMPORTANTE: Extraemos solo los campos que el backend permite EDITAR.
+    // Sacamos gender_display e id_std porque el servidor dará Error 400 si se los envías.
+    const { gender_display, id_std, ...dataToSend } = student;
+
+    try {
+
+      // 1. Limpiamos el ID de posibles ":" que vengan de la URL
+      const cleanId = params.id_std ? params.id_std.toString().replace(":", "") : null;
+      if (cleanId) {
+        // Modo Edición
+        console.log("Enviando actualización para ID:", cleanId, dataToSend);
+        await updateStudent(cleanId, dataToSend);
+        notify.success("Succesfully Updated Student...")
+      } else {
+        // Modo Creación
+        await createStudent(student);
+        notify.success("Succesfully Created Student...");
+      }
+      //navigate("/"); 
+    } catch (error) {
+      const serverErrors = error.response?.data;
+
+        // Manejo de los errores 
+        if (serverErrors?.user) {
+            notify.error("This user have assigned a student.");
+        } else if (serverErrors?.gender) {
+            notify.warning("Please choose a valid gender!.");
+        } else {
+            notify.error("opps.... An Unexpected Error happened!");
+        }
     }
-    navigate("/"); //Redirigir al usuario a la pagina principal
+
   };
 
   return (
@@ -206,6 +233,7 @@ export default function StudentForm() {
         <div className="mt-4 flex gap-2">
           <button
             type="submit"
+            onClick={() => navigate("/students")}
             className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline duration-200 cursor-pointer"
           >
             Submit
