@@ -147,8 +147,25 @@ export default function CursoForm() {
           <input
             value={curso.semestre_curso}
             type="text"
-            onChange={(e) => setCurso({ ...curso, semestre_curso: e.target.value })}
+            onChange={(e) =>
+              setCurso({ ...curso, semestre_curso: e.target.value })
+            }
             id="semester"
+            className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-sm font-bold mb-2" htmlFor="creditos">
+            Credits Courses:
+          </label>
+          <input
+            value={curso.creditos_curso}
+            type="text"
+            onChange={(e) =>
+              setCurso({ ...curso, creditos_curso: e.target.value })
+            }
+            id="creditos"
             className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
           />
         </div>
@@ -189,7 +206,6 @@ export default function CursoForm() {
             Cancel
           </button>
         </div>
-
       </form>
     </div>
   );

@@ -5,7 +5,7 @@ import logo from '../assets/logo-side.svg';
 // Icons
 import { MdMenuOpen, MdOutlineSettings, MdOutlineLogout, MdOutlineClass } from "react-icons/md";
 import { IoHomeOutline } from "react-icons/io5";
-import { PiStudentLight, PiChalkboardTeacher } from "react-icons/pi";
+import { PiStudentLight, PiChalkboardTeacher, PiUserLight } from "react-icons/pi";
 import { TbReportSearch } from "react-icons/tb";
 
 const menuItems = [
@@ -13,6 +13,11 @@ const menuItems = [
         icons: <IoHomeOutline size={22} />,
         label: 'Home',
         path: '/' // Ruta raíz
+    },
+    {
+        icons: <PiUserLight size={22} />,
+        label: 'Users',
+        path: '/users' 
     },
     {
         icons: <PiStudentLight size={22} />,
