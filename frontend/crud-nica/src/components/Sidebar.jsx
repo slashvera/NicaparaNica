@@ -31,8 +31,8 @@ const menuItems = [
     },
     {
         icons: <MdOutlineClass size={22} />,
-        label: 'Classes',
-        path: '/classes'
+        label: 'Courses',
+        path: '/courses'
     },
     {
         icons: <TbReportSearch size={22} />,

@@ -7,7 +7,7 @@ export default function Header() {
     const [darkMode, setDarkMode] = useState(false);
     return (
         <header className='bg-white flex justify-between items-center p-4 shadow-sm border-b border-gray-100 h-20'>
-            <h1 className='text-2xl font-bold'>Dashboard</h1>
+            <h1 className='text-2xl font-black'>Dashboard</h1>
             <div className='flex items-center gap-4'>
                 <span className='text-sm text-gray-500'>Hey There!, Admin</span>
                 
