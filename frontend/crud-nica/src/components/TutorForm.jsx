@@ -1,170 +1,185 @@
-import { useState } from "react";//Importamos useState para manejar el estado del componente
-import { useEffect } from "react";//Importar useEffect para manejar la obtención de datos 
-import { useNavigate, useParams } from "react-router-dom";//Importar useNavigate para redirigir al usuario
-import { createTutor,getTutor,updateTutor } from "../api/tutors";//Importar la función para crear un nuevo docente
-
+import { useState } from "react"; //Importamos useState para manejar el estado del componente
+import { useEffect } from "react"; //Importar useEffect para manejar la obtención de datos
+import { useNavigate, useParams } from "react-router"; //Importar useNavigate para redirigir al usuario
+import { createTutor, getTutor, updateTutor } from "../api/tutors"; //Importar la función para crear un nuevo estudiante
+import { getUsers } from "../api/users";//Importamos APi de usuarios
+import { useNotify } from "../hook/useNotify";
 
 export default function TutorForm() {
+  const notify = useNotify();
+  const navigate = useNavigate();
+  const params = useParams();
 
-    const [tutor, setTutor] = useState({
-        first_name: '',
-        last_name: '',
-        gender:'',
-        correo_tutor:'',
-        status:''
-    });
+  const [tutor, setTutor] = useState({
+    first_name: "",
+    last_name: "",
+    gender: "",
+    correo_tutor: "",
+    is_active: true,
+    user: "",
+  });
 
-    const navigate = useNavigate();
-    const params = useParams();//Obtenemos los parámetros de la URL (aunque no se usan en este componente)
+  const [users, setUsers] = useState([]);
 
-    useEffect(() => {
-        // Aquí podríamos cargar los datos del docente si estuviéramos editando uno existente
-        const loadTutor = async () => {
-            if (params.id_tutor) {//validar si es una creación o edición
-                const response = await getTutor(params.id_tutor);
-                setTutor(response.data);//Actualizar el estado con los datos del docente a editar  
-            }
-        }
-        loadTutor();//Llamar a la función para cargar los datos del docente
-    }, [params.id_tutor]); 
+  useEffect(() => {
+    const loadUsers = async () => {
+      try {
+        const res = await getUsers();
+        setUsers(res.data);
+      } catch (error) {
+        console.error("Error cargando usuarios", error);
+      }
+    };
+    loadUsers();
+  }, []);
 
+  useEffect(() => {
+    const loadTutor = async () => {
+      if (params.id_tutor) {
+        const response = await getTutor(params.id_tutor);
+        setTutor(response.data);
+      }
+    };
+    loadTutor();
+  }, [params.id_tutor]);
 
-    const handleSubmit = async (e) => { //funcion para manejar el envio del formulario
-        e.preventDefault();//No envia el formulario de forma tradicional
-        if (params.id_tutor) {
-            //Seria una edicion de docente existente
-            await updateTutor(params.id_tutor, tutor);//Llamar a la funcion updateTutor para actualizar al docente
-        }else{
-            //Seria la creacion de un nuevo docente
-            await createTutor(tutor);//Llamar a la funcion createTutor para crear un nuevo estudiante
-        }
-        navigate('/');//Redirigir al usuario a la pagina principal
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!tutor.first_name || !tutor.last_name || !tutor.gender || !tutor.correo_tutor || !tutor.user) {
+      notify.error("Todos los campos son obligatorios");
+      return;
     }
 
-    return (
-    <div className="bg-white text-black flex justify-center items-center min-h-screen">
-      <form onSubmit={handleSubmit} className="w-full max-w-md">
+    const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!regexEmail.test(tutor.correo_tutor)) {
+      notify.error("El correo electrónico no es válido");
+      return;
+    }
 
-            <div className="mb-6 text-2xl font-bold text-center">
-                <h1>Formulario de Docente</h1>
-            </div>
+    if (params.id_tutor) {
+      await updateTutor(params.id_tutor, tutor);
+      notify.success("Tutor actualizado correctamente");
+    } else {
+      await createTutor(tutor);
+      notify.success("Tutor creado correctamente");
+    }
 
-            <div className="mb-4">
-                <label className="block text-sm font-bold mb-2" htmlFor="name">
-                Name:
-                </label>
-                <input
-                value={tutor.first_name}
-                type="text"
-                onChange={(e) =>
-                    setTutor({ ...tutor, first_name: e.target.value })
-                }
-                id="name"
-                className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
-                />
-            </div>
+    navigate("/");
+  };
 
-            <div className="mb-4">
-                <label className="block text-sm font-bold mb-2" htmlFor="lastname">
-                Last Name:
-                </label>
-                <input
-                value={tutor.last_name}
-                type="text"
-                onChange={(e) =>
-                    setTutor({ ...tutor, last_name: e.target.value })
-                }
-                id="lastname"
-                className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
-                />
-            </div>
+  return (
+    <div className="bg-base-200 text-base-content flex justify-center items-center min-h-screen transition-colors duration-500">
+      <form onSubmit={handleSubmit} className="w-full max-w-md bg-base-100 p-6 rounded-lg shadow-md">
+        <div className="mb-6 text-2xl font-bold text-center">
+          <h1>Formulario de Tutor</h1>
+        </div>
 
+        {/* Nombre */}
+        <div className="mb-4">
+          <label className="block text-sm font-bold mb-2" htmlFor="name">Name:</label>
+          <input
+            value={tutor.first_name}
+            type="text"
+            onChange={(e) => setTutor({ ...tutor, first_name: e.target.value })}
+            id="name"
+            className="w-full shadow border rounded py-2 px-3 bg-base-200 text-base-content focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
 
-            <div className="mb-4">
-                <label className="block text-sm font-bold mb-2" htmlFor="gender">
-                Gender:
-                </label>
+        {/* Apellido */}
+        <div className="mb-4">
+          <label className="block text-sm font-bold mb-2" htmlFor="lastname">Last Name:</label>
+          <input
+            value={tutor.last_name}
+            type="text"
+            onChange={(e) => setTutor({ ...tutor, last_name: e.target.value })}
+            id="lastname"
+            className="w-full shadow border rounded py-2 px-3 bg-base-200 text-base-content focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
 
-                <select
-                value={tutor.gender}
-                onChange={(e) =>
-                    setTutor({ ...tutor, gender: e.target.value })
-                }
-                className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
-                >
-                <option value="M">Male</option>
-                <option value="F">Female</option>
-                <option value="O">Other</option>
-                </select>
-            </div>
+        {/* Género */}
+        <div className="mb-4">
+          <label className="block text-sm font-bold mb-2" htmlFor="gender">Gender:</label>
+          <select
+            value={tutor.gender}
+            onChange={(e) => setTutor({ ...tutor, gender: e.target.value })}
+            className="w-full shadow border rounded py-2 px-3 bg-base-200 text-base-content focus:outline-none focus:ring-2 focus:ring-primary"
+          >
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+            <option value="O">Other</option>
+          </select>
+        </div>
 
-            <div className="mb-4">
-                <label className="block text-sm font-bold mb-2" htmlFor="email">
-                Email:
-                </label>
-                <input
-                value={tutor.correo_tutor}
-                type="email"
-                onChange={(e) =>
-                    setTutor({ ...tutor, correo_tutor: e.target.value })
-                }
-                id="email"
-                className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
-                />
-            </div>
+        {/* Email */}
+        <div className="mb-4">
+          <label className="block text-sm font-bold mb-2" htmlFor="email">Email:</label>
+          <input
+            value={tutor.correo_tutor}
+            type="email"
+            onChange={(e) => setTutor({ ...tutor, correo_tutor: e.target.value })}
+            id="email"
+            className="w-full shadow border rounded py-2 px-3 bg-base-200 text-base-content focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
 
-            <div className="mb-4">
-              <label className="block text-sm font-bold mb-2">Status:</label>
-            
-                <div className="flex space-x-6">
-                    <div className="flex items-center">
-                        <input
-                            type="radio"
-                            id="activo"
-                            name="status" 
-                            value="activo"
-                            checked={tutor.status === "activo"}
-                            onChange={() => setTutor({ ...tutor, status: "activo" })}
-                            className="mr-2"
-                        />
-                        <label htmlFor="activo" className="text-gray-700">Activo</label>
-                        </div>
+        {/* Usuario */}
+        <div className="mb-4">
+          <label className="block text-sm font-bold mb-2">Usuario</label>
+          <select
+            value={tutor.user}
+            onChange={(e) => setTutor({ ...tutor, user: e.target.value })}
+            className="w-full shadow border rounded py-2 px-3 bg-base-200 text-base-content focus:outline-none focus:ring-2 focus:ring-primary"
+          >
+            <option value="" disabled>Seleccione un usuario</option>
+            {users.map((user) => (
+              <option key={user.id} value={user.id}>{user.username}</option>
+            ))}
+          </select>
+        </div>
 
-                        <div className="flex items-center">
-                        <input
-                            type="radio"
-                            id="inactivo"
-                            name="status"  
-                            value="inactivo"
-                            checked={tutor.status === "inactivo"}
-                            onChange={() => setTutor({ ...tutor, status: "inactivo" })}
-                            className="mr-2"
-                        />
-                        <label htmlFor="inactivo" className="text-gray-700">Inactivo</label>
-                        </div>
-                    </div>
-                </div>
+        {/* Estado */}
+        <div className="mb-6 flex items-center bg-base-200 p-3 rounded-lg border border-base-300">
+          <input
+            id="is_active"
+            type="checkbox"
+            checked={tutor.is_active}
+            onChange={(e) => setTutor({ ...tutor, is_active: e.target.checked })}
+            className="w-5 h-5 text-primary bg-base-100 border-base-300 rounded focus:ring-primary cursor-pointer"
+          />
+          <label htmlFor="is_active" className="ml-3 text-sm font-bold cursor-pointer">
+            ¿El tutor está activo?
+          </label>
+          <span
+            className={`ml-auto text-xs font-bold px-2 py-1 rounded ${
+              tutor.is_active ? "bg-success text-success-content" : "bg-error text-error-content"
+            }`}
+          >
+            {tutor.is_active ? "ACTIVO" : "INACTIVO"}
+          </span>
+        </div>
 
-            
-                <div className="mt-4 flex gap-2">
-                    <button
-                    type="submit"
-                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline duration-200 cursor-pointer"
-                    >
-                    Submit
-                    </button>
+        {/* Botones */}
+        <div className="mt-4 flex gap-2">
+          <button
+            type="submit"
+            className="bg-primary hover:bg-primary-focus text-primary-content font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-primary duration-200 cursor-pointer"
+          >
+            Submit
+          </button>
 
-                    <button
-                    type="reset"
-                    onClick={() => navigate('/teachers')}
-                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline duration-200 cursor-pointer"
-                    >
-                    Cancel
-                    </button>
-                </div>
-
-        </form>
+          <button
+            type="reset"
+            onClick={() => navigate("/teachers")}
+            className="bg-error hover:bg-red-700 text-error-content font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-error duration-200 cursor-pointer"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
     </div>
-    );
-    
+  );
 }
+

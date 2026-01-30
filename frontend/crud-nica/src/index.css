@@ -1,1 +1,10 @@
 @import "tailwindcss";
+@plugin "daisyui";
+
+.hover-3d {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.hover-3d:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+}
