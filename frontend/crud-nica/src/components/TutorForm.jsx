@@ -8,10 +8,9 @@ import { useNotify } from "../hook/useNotify";
 export default function TutorForm() {
   const notify = useNotify();
   const navigate = useNavigate();
-  const params = useParams(); //Obtenemos los parámetros de la URL (aunque no se usan en este componente)
+  const params = useParams();
 
   const [tutor, setTutor] = useState({
-    //variable
     first_name: "",
     last_name: "",
     gender: "",
@@ -20,15 +19,12 @@ export default function TutorForm() {
     user: "",
   });
 
-  //Crear un estado para el listado de usuarios
   const [users, setUsers] = useState([]);
 
-  //Cargar usuarios con useEffect
   useEffect(() => {
     const loadUsers = async () => {
       try {
         const res = await getUsers();
-        //console.log("USERS:", res.data);
         setUsers(res.data);
       } catch (error) {
         console.error("Error cargando usuarios", error);
@@ -38,34 +34,29 @@ export default function TutorForm() {
   }, []);
 
   useEffect(() => {
-    // Aquí podríamos cargar los datos del estudiante si estuviéramos editando uno existente
     const loadTutor = async () => {
       if (params.id_tutor) {
-        //validar si es una creación o edición
         const response = await getTutor(params.id_tutor);
-        setTutor(response.data); //Actualizar el estado con los datos del tutor a editar
+        setTutor(response.data);
       }
     };
-    loadTutor(); //Llamar a la función para cargar los datos del tutor
+    loadTutor();
   }, [params.id_tutor]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Evita el envío tradicional
+    e.preventDefault();
 
-    // Validar campos vacíos
     if (!tutor.first_name || !tutor.last_name || !tutor.gender || !tutor.correo_tutor || !tutor.user) {
       notify.error("Todos los campos son obligatorios");
       return;
     }
 
-    // Validar formato de correo
     const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!regexEmail.test(tutor.correo_tutor)) {
       notify.error("El correo electrónico no es válido");
       return;
     }
 
-    // Si pasa las validaciones, decide si es edición o creación
     if (params.id_tutor) {
       await updateTutor(params.id_tutor, tutor);
       notify.success("Tutor actualizado correctamente");
@@ -74,56 +65,47 @@ export default function TutorForm() {
       notify.success("Tutor creado correctamente");
     }
 
-    navigate("/"); // Redirigir al usuario
+    navigate("/");
   };
 
-
   return (
-    <div className="bg-white text-black flex justify-center items-center min-h-screen">
-      <form onSubmit={handleSubmit} className="w-full max-w-md">
+    <div className="bg-base-200 text-base-content flex justify-center items-center min-h-screen transition-colors duration-500">
+      <form onSubmit={handleSubmit} className="w-full max-w-md bg-base-100 p-6 rounded-lg shadow-md">
         <div className="mb-6 text-2xl font-bold text-center">
           <h1>Formulario de Tutor</h1>
         </div>
 
+        {/* Nombre */}
         <div className="mb-4">
-          <label className="block text-sm font-bold mb-2" htmlFor="name">
-            Name:
-          </label>
+          <label className="block text-sm font-bold mb-2" htmlFor="name">Name:</label>
           <input
             value={tutor.first_name}
             type="text"
-            onChange={(e) =>
-              setTutor({ ...tutor, first_name: e.target.value })
-            }
+            onChange={(e) => setTutor({ ...tutor, first_name: e.target.value })}
             id="name"
-            className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
+            className="w-full shadow border rounded py-2 px-3 bg-base-200 text-base-content focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
 
+        {/* Apellido */}
         <div className="mb-4">
-          <label className="block text-sm font-bold mb-2" htmlFor="lastname">
-            Last Name:
-          </label>
+          <label className="block text-sm font-bold mb-2" htmlFor="lastname">Last Name:</label>
           <input
             value={tutor.last_name}
             type="text"
-            onChange={(e) =>
-              setTutor({ ...tutor, last_name: e.target.value })
-            }
+            onChange={(e) => setTutor({ ...tutor, last_name: e.target.value })}
             id="lastname"
-            className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
+            className="w-full shadow border rounded py-2 px-3 bg-base-200 text-base-content focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
 
+        {/* Género */}
         <div className="mb-4">
-          <label className="block text-sm font-bold mb-2" htmlFor="gender">
-            Gender:
-          </label>
-
+          <label className="block text-sm font-bold mb-2" htmlFor="gender">Gender:</label>
           <select
             value={tutor.gender}
             onChange={(e) => setTutor({ ...tutor, gender: e.target.value })}
-            className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
+            className="w-full shadow border rounded py-2 px-3 bg-base-200 text-base-content focus:outline-none focus:ring-2 focus:ring-primary"
           >
             <option value="M">Male</option>
             <option value="F">Female</option>
@@ -131,68 +113,59 @@ export default function TutorForm() {
           </select>
         </div>
 
+        {/* Email */}
         <div className="mb-4">
-          <label className="block text-sm font-bold mb-2" htmlFor="email">
-            Email:
-          </label>
-
+          <label className="block text-sm font-bold mb-2" htmlFor="email">Email:</label>
           <input
             value={tutor.correo_tutor}
             type="email"
-            onChange={(e) =>
-              setTutor({ ...tutor, correo_tutor: e.target.value })
-            }
+            onChange={(e) => setTutor({ ...tutor, correo_tutor: e.target.value })}
             id="email"
-            className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
+            className="w-full shadow border rounded py-2 px-3 bg-base-200 text-base-content focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
 
+        {/* Usuario */}
         <div className="mb-4">
           <label className="block text-sm font-bold mb-2">Usuario</label>
           <select
             value={tutor.user}
-            onChange={(e) => setTutor ({ ...tutor, user: e.target.value })}
-            className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
+            onChange={(e) => setTutor({ ...tutor, user: e.target.value })}
+            className="w-full shadow border rounded py-2 px-3 bg-base-200 text-base-content focus:outline-none focus:ring-2 focus:ring-primary"
           >
-            <option value="" disabled>
-              Seleccione un usuario
-            </option>
-
+            <option value="" disabled>Seleccione un usuario</option>
             {users.map((user) => (
-              <option key={user.id} value={user.id}>
-                {user.username}
-              </option>
+              <option key={user.id} value={user.id}>{user.username}</option>
             ))}
           </select>
         </div>
 
-        <div className="mb-6 flex items-center bg-gray-50 p-3 rounded-lg border border-gray-200">
+        {/* Estado */}
+        <div className="mb-6 flex items-center bg-base-200 p-3 rounded-lg border border-base-300">
           <input
             id="is_active"
             type="checkbox"
-            checked={tutor.is_active} // Usamos checked en lugar de value
-            onChange={(e) =>
-              setTutor({ ...tutor, is_active: e.target.checked })
-            }
-            className="w-5 h-5 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 cursor-pointer"
+            checked={tutor.is_active}
+            onChange={(e) => setTutor({ ...tutor, is_active: e.target.checked })}
+            className="w-5 h-5 text-primary bg-base-100 border-base-300 rounded focus:ring-primary cursor-pointer"
           />
-          <label
-            htmlFor="is_active"
-            className="ml-3 text-sm font-bold text-gray-700 cursor-pointer"
-          >
+          <label htmlFor="is_active" className="ml-3 text-sm font-bold cursor-pointer">
             ¿El tutor está activo?
           </label>
           <span
-            className={`ml-auto text-xs font-bold px-2 py-1 rounded ${tutor.is_active ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}
+            className={`ml-auto text-xs font-bold px-2 py-1 rounded ${
+              tutor.is_active ? "bg-success text-success-content" : "bg-error text-error-content"
+            }`}
           >
             {tutor.is_active ? "ACTIVO" : "INACTIVO"}
           </span>
         </div>
 
+        {/* Botones */}
         <div className="mt-4 flex gap-2">
           <button
             type="submit"
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline duration-200 cursor-pointer"
+            className="bg-primary hover:bg-primary-focus text-primary-content font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-primary duration-200 cursor-pointer"
           >
             Submit
           </button>
@@ -200,7 +173,7 @@ export default function TutorForm() {
           <button
             type="reset"
             onClick={() => navigate("/teachers")}
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline duration-200 cursor-pointer"
+            className="bg-error hover:bg-red-700 text-error-content font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-error duration-200 cursor-pointer"
           >
             Cancel
           </button>
@@ -209,3 +182,4 @@ export default function TutorForm() {
     </div>
   );
 }
+

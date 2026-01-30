@@ -83,7 +83,7 @@ class Matricula(models.Model):
     id_matricula = models.AutoField(primary_key=True)
     id_std = models.ForeignKey(Student, on_delete=models.RESTRICT, db_column='id_std')
     id_curso = models.ForeignKey(Curso, on_delete=models.RESTRICT, db_column='id_curso')
-    fecha_matricula = models.DateField()
+    fecha_matricula = models.DateField(auto_now_add=True)
     semestre = models.IntegerField()
     estado = models.CharField(max_length=20, default='ACTIVA')
 

@@ -6,16 +6,16 @@ import StudentList from './components/StudentList'
 import TutorForm from './components/TutorForm'
 import StudentForm from './components/StudentForm'
 import UserForm from './components/UserForm'
-<<<<<<< HEAD
-=======
 import CursoList from './components/CursoList'
->>>>>>> 6c6b51f7fed9311cfbe343792193b683c8395219
 import MainLayout from './components/layouts/dashboard'
 import Maincomponent from './components/Maincomponent'
 import Notfound from './components/Notfound'
 import { Toaster } from 'react-hot-toast'
 import { PiUserList } from 'react-icons/pi'
 import CursoForm from './components/CursoForm'
+import MainReport from './components/MainReport'
+import ReportSheet from './components/ReportSheet'
+import Enrollment from './components/Enrollment'
 
 
 function App() {
@@ -36,7 +36,7 @@ function App() {
 
             <Route path="new-tutor" element={<TutorForm/>}/>
 
-            <Route path='new-course' element={<CursoForm/>}></Route>
+            <Route path="new-course" element={<CursoForm/>}/>
             
             {/* Verifica que el parámetro (id_std) sea el mismo que usas en useParams en el formulario */}
             <Route path="edit-student/:id_std" element={<StudentForm/>}/>
@@ -46,11 +46,11 @@ function App() {
             
             {/* Si en StudentList navegas a /edit-user/, aquí debe decir edit-user */}
             <Route path="edit-user/:id" element={<UserForm/>}/>
-<<<<<<< HEAD
-=======
+
+            {/* Si en MainReport navegas a /see-table/, aquí debe decir see-table */}
+            <Route path="see-table/:id_nota" element={<ReportSheet/>}/>
 
             <Route path='edit-course/:id_curso' element={<CursoForm/>}/>
->>>>>>> 6c6b51f7fed9311cfbe343792193b683c8395219
             
             <Route path="students" element={<StudentList/>}/>
 
@@ -58,11 +58,12 @@ function App() {
 
             <Route path="users" element={<UserList/>}/>
 
-<<<<<<< HEAD
-=======
+            <Route path="enrollment" element={<Enrollment/>}/>
+
             <Route path='courses' element={<CursoList/>}></Route>
 
->>>>>>> 6c6b51f7fed9311cfbe343792193b683c8395219
+            <Route path="reports" element={<MainReport/>}/>
+
             <Route path="*" element={<Notfound/>}/>
           </Route>
         </Routes>
