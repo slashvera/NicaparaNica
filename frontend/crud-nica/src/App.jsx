@@ -16,6 +16,7 @@ import CursoForm from './components/CursoForm'
 import MainReport from './components/MainReport'
 import ReportSheet from './components/ReportSheet'
 import Enrollment from './components/Enrollment'
+import LoginForm from './components/LoginForm'
 
 
 function App() {
@@ -25,7 +26,8 @@ function App() {
         <Toaster position="top-right"/>
         <Routes>
           {/* MainLayout es el contenedor principal */}
-          <Route path='/' element={<MainLayout/>}>
+          <Route path='/' element={<LoginForm/>}>
+          <Route path='/main' element={<MainLayout/>}></Route>
             {/* Las rutas hijas NO deben llevar "/" al inicio del path */}
 
             <Route index element={<Maincomponent/>}/>
