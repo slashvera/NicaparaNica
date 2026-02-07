@@ -161,5 +161,6 @@ SIMPLE_JWT = {
 #======================= Dominios permitidos =======================
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173", #React dev server
+    "https://localhost:3000" #Next.js dev server
 ]
 

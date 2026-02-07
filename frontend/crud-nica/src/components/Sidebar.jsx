@@ -65,7 +65,7 @@ export default function Sidebar() {
                 }
                 >
                 {/* Ícono siempre visible */}
-                <div className="flex-shrink-0 w-6 h-6 flex items-center justify-center">
+                <div className="shrink-0 w-6 h-6 flex items-center justify-center">
                     {item.icons}
                 </div>
 
