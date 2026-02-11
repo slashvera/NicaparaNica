@@ -1,6 +1,5 @@
 import Header from "../Header.jsx";
 import Sidebar from "../Sidebar.jsx";
-import StudentList from "../StudentList.jsx";
 import { Outlet } from "react-router";
 
 export default function MainLayout() {
