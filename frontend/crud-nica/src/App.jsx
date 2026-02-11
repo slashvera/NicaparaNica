@@ -16,8 +16,12 @@ import CursoForm from './components/CursoForm'
 import MainReport from './components/MainReport'
 import ReportSheet from './components/ReportSheet'
 import Enrollment from './components/Enrollment'
+<<<<<<< Updated upstream
 import LoginForm from './components/LoginForm'
 
+=======
+import AddUserForm from './components/AddUserForm'
+>>>>>>> Stashed changes
 
 function App() {
   return (
@@ -31,7 +35,7 @@ function App() {
 
             <Route index element={<Maincomponent/>}/>
 
-            <Route path="new-user" element={<UserForm/>}/>
+            <Route path="new-user" element={<AddUserForm/>}/>
 
             <Route path="new-student" element={<StudentForm/>}/>
 
