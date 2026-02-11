@@ -26,8 +26,7 @@ function App() {
         <Toaster position="top-right"/>
         <Routes>
           {/* MainLayout es el contenedor principal */}
-          <Route path='/' element={<LoginForm/>}>
-          <Route path='/main' element={<MainLayout/>}></Route>
+          <Route path='/main' element={<MainLayout/>}>
             {/* Las rutas hijas NO deben llevar "/" al inicio del path */}
 
             <Route index element={<Maincomponent/>}/>

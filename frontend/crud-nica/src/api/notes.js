@@ -7,3 +7,5 @@ const notasApi = axios.create({
 export const getNotas = () => notasApi.get();
 export const getNota  = (id_nota) => notasApi.get(`${id_nota}`);
 export const UpdateNota = (id_nota, nota) => notasApi.put(`/${id_nota}/`, nota);
+export const CreateNota = (nota) => notasApi.post('/', nota);
+export const DeleteNota = (id_nota) => notasApi.delete(`/${id_nota}/`);

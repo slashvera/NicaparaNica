@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "corsheaders",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -48,7 +49,7 @@ INSTALLED_APPS = [
 #agragamos el middleware de corsheaders para permitir solicitudes desde otros dominios
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -160,6 +161,7 @@ SIMPLE_JWT = {
 
 #======================= Dominios permitidos =======================
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173", #React dev server
+    "http://localhost:3000",  # Next.js
+    "http://localhost:5173",  # Vite / React
 ]
 
