@@ -3,6 +3,11 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from main.models import Student, Tutor, Curso, Matricula, Nota
 from .serializer import StudentSerializer, TutorSerializer, CursoSerializer, MatriculaSerializer, NotaSerializer, UserSerializer #importamos los Serializers
 from django.contrib.auth.models import User #importacion del modelo de usuario
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from django.contrib.auth import authenticate
+from rest_framework_simplejwt.tokens import RefreshToken
 
 #¿Qué es ModelViewSet?
 #Un ModelViewSet es una clase proporcionada por Django REST Framework que combina la funcionalidad de un ViewSet con la de un modelo específico. Permite crear automáticamente vistas para operaciones CRUD (Crear, Leer, Actualizar, Eliminar) basadas en un modelo de Django, simplificando el proceso de desarrollo de API RESTful.
@@ -37,3 +42,43 @@ class MatriculaViewSet(viewsets.ModelViewSet):
 class NotaViewSet(viewsets.ModelViewSet):
     queryset = Nota.objects.all() 
     serializer_class = NotaSerializer;
+    
+class LoginView(APIView):
+    def post(self, request):
+        username = request.data.get("username")
+        password = request.data.get("password")
+        role = request.data.get("role")  # admin, tutor, student
+
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            # Determinar rol según perfil vinculado
+            user_role = "admin"
+            if hasattr(user, "student_profile"):
+                user_role = "student"
+            elif hasattr(user, "tutor_profile"):
+                user_role = "tutor"
+
+            # Validar que el rol seleccionado coincida
+            if user_role != role:
+                return Response(
+                    {"error": "Rol incorrecto para este usuario"},
+                    status=status.HTTP_403_FORBIDDEN,
+                )
+
+            # Generar tokens JWT
+            refresh = RefreshToken.for_user(user)
+            return Response(
+                {
+                    "access": str(refresh.access_token),
+                    "refresh": str(refresh),
+                    "role": user_role,
+                    "username": user.username,
+                },
+                status=status.HTTP_200_OK,
+            )
+        else:
+            return Response(
+                {"error": "Credenciales inválidas"},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
