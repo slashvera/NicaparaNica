@@ -140,13 +140,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ),
 
      #Esta línea obliga a que todas las vistas requieran autenticación por defecto 
 
      'DEFAULT_PERMISSION_CLASSES': (
-        #'rest_framework.permissions.IsAuthenticated',
-        'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.IsAuthenticated',
+        #'rest_framework.permissions.AllowAny',
     ) 
 }
 
@@ -161,12 +162,7 @@ SIMPLE_JWT = {
 
 #======================= Dominios permitidos =======================
 CORS_ALLOWED_ORIGINS = [
-<<<<<<< HEAD
-    "http://localhost:5173", #React dev server
-    "http://localhost:3000" #Next.js dev server
-=======
     "http://localhost:3000",  # Next.js
     "http://localhost:5173",  # Vite / React
->>>>>>> 0c8da049cfbaa1b7199af8786a9b1787a3172e0b
 ]
 
