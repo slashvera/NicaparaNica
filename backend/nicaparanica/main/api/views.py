@@ -1,11 +1,15 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from main.models import Student, Tutor, Curso, Matricula, Nota
-from .serializer import StudentSerializer, TutorSerializer, CursoSerializer, MatriculaSerializer, NotaSerializer, UserSerializer #importamos los Serializers
+from .serializer import StudentSerializer, TutorSerializer, CursoSerializer, MatriculaSerializer, NotaSerializer, UserSerializer, MytokenObtainPairSerializer #importamos los Serializers
 from django.contrib.auth.models import User #importacion del modelo de usuario
-
+from rest_framework_simplejwt.views import TokenObtainPairView
 #¿Qué es ModelViewSet?
 #Un ModelViewSet es una clase proporcionada por Django REST Framework que combina la funcionalidad de un ViewSet con la de un modelo específico. Permite crear automáticamente vistas para operaciones CRUD (Crear, Leer, Actualizar, Eliminar) basadas en un modelo de Django, simplificando el proceso de desarrollo de API RESTful.
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MytokenObtainPairSerializer
+
 
 class RegisterUserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -15,7 +19,6 @@ class RegisterUserViewSet(viewsets.ModelViewSet):
             return [AllowAny()]  # Permitir acceso sin autenticación para la acción de creación
         # Para ver la lista (GET) o borrar, pedimos estar logueado
         return [AllowAny()]  # Requerir autenticación para otras acciones
-
 
 class StudentViewSet(viewsets.ModelViewSet):
     #permission_classes = [IsAuthenticated] #protege la vista con autenticacion
