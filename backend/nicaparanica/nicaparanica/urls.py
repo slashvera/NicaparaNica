@@ -16,13 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from main.api.views import MyTokenObtainPairView #importamos la vista personalizada para obtener el token
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,    #obtener el token de acceso
     TokenRefreshView,      #refrescar el token de acceso
     )
 
 urlpatterns = [
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('admin/', admin.site.urls),
     path('api/', include('main.api.urls')),# incluimos las rutas de la api

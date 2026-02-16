@@ -2,6 +2,27 @@
 from rest_framework import serializers
 from main.models import Student, Tutor, Curso, Matricula, Nota
 from django.contrib.auth.models import User#importacion del modelo de usuario
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+
+class MytokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        #Obtenemos el token base
+        token = super().get_token(user)
+
+        #Agregamos datos personalizados Al JWT
+        token['username'] = user.username
+
+        group = user.groups.first() #Obtenemos el primer grupo al que pertenece el usuario
+        token['role'] = group.name if group else 'No Role' #Agregamos el nombre del grupo al token o 'No Role' si no tiene grupo    
+
+        #si es superusuario o admin
+        token['is_superuser'] = user.is_superuser
+
+        return token
+
+
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=False)
