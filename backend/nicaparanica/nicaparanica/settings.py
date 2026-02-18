@@ -22,10 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-@89=j(heqh^#bvx6^7*11tjl3$v@&&!q9@!tbaaz_*np!mk1-0'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default= False, cast=bool)
 
 ALLOWED_HOSTS = []
 
@@ -152,7 +152,7 @@ REST_FRAMEWORK = {
 }
 
 #======================= Tokens mas cortos =======================
-
+#Search way to keep token alive
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer'),
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
