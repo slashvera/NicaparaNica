@@ -25,34 +25,25 @@ class MytokenObtainPairSerializer(TokenObtainPairSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True, required=False)
-    confirm_password = serializers.CharField(write_only=True, required=False)
+    password = serializers.CharField(write_only=True, required=True, min_length=8)
+    confirm_password = serializers.CharField(write_only=True, required=True)
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'password', 'confirm_password', 'email', 'is_active', 'is_superuser']
+        fields = ['id', 'username', 'password', 'confirm_password', 'email', 'is_active']
         extra_kwargs = {
             'password': {'write_only': True},
             'confirm_password': {'write_only': True}
         }
+    
+    def validate(self, data):
+        if data.get('password') != data.get('confirm_password'):
+            raise serializers.ValidationError({"password": "passwords do not match."})
 
     def create(self, validated_data):
-        validated_data.pop('confirm_password', None)
+        validated_data.pop('confirm_password')
         user = User.objects.create_user(**validated_data)
         return user
-
-    def update(self, instance, validated_data):
-        password = validated_data.pop('password', None)
-        validated_data.pop('confirm_password', None)
-
-        for attr, value in validated_data.items():
-            setattr(instance, attr, value)
-
-        if password:
-            instance.set_password(password)
-
-        instance.save()
-        return instance
 
 
 class StudentSerializer(serializers.ModelSerializer):
