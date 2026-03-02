@@ -22,38 +22,26 @@ class MytokenObtainPairSerializer(TokenObtainPairSerializer):
 
         return token
 
-
-
 class UserSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True, required=False)
-    confirm_password = serializers.CharField(write_only=True, required=False)
+    password = serializers.CharField(write_only=True, required=True, min_length=8)
+    confirm_password = serializers.CharField(write_only=True, required=True)
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'password', 'confirm_password', 'email', 'is_active', 'is_superuser']
+        fields = ['id', 'username', 'password', 'confirm_password', 'email', 'is_active']
         extra_kwargs = {
             'password': {'write_only': True},
             'confirm_password': {'write_only': True}
         }
+    
+    def validate(self, data):
+        if data.get('password') != data.get('confirm_password'):
+            raise serializers.ValidationError({"password": "passwords do not match."})
 
     def create(self, validated_data):
-        validated_data.pop('confirm_password', None)
+        validated_data.pop('confirm_password')
         user = User.objects.create_user(**validated_data)
         return user
-
-    def update(self, instance, validated_data):
-        password = validated_data.pop('password', None)
-        validated_data.pop('confirm_password', None)
-
-        for attr, value in validated_data.items():
-            setattr(instance, attr, value)
-
-        if password:
-            instance.set_password(password)
-
-        instance.save()
-        return instance
-
 
 class StudentSerializer(serializers.ModelSerializer):
     gender_display = serializers.CharField(
@@ -84,8 +72,13 @@ class MatriculaSerializer(serializers.ModelSerializer):
     estudiante_nombre = serializers.CharField(source="id_std.first_name", read_only=True)
     estudiante_apellido = serializers.CharField(source="id_std.last_name", read_only=True)
     nombre_curso = serializers.CharField(source="id_curso.nombre_curso", read_only=True)
-    profesor_nombre = serializers.CharField(source="id_curso.id_profesor.nombre", read_only=True)
+    profesor_nombre = serializers.SerializerMethodField();
 
+    def get_profesor_nombre(self, obj):
+        if obj.id_curso and obj.id_curso.id_tutor:
+            return f"{obj.id_curso.id_tutor.first_name} {obj.id_curso.id_tutor.last_name}"
+        return None
+    
     class Meta:
         model = Matricula
         fields = [

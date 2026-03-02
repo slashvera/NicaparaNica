@@ -14,11 +14,11 @@ class MyTokenObtainPairView(TokenObtainPairView):
 class RegisterUserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    def get_permissions(self):#validar permisos
-        if self.action == 'create':
-            return [AllowAny()]  # Permitir acceso sin autenticación para la acción de creación
-        # Para ver la lista (GET) o borrar, pedimos estar logueado
-        return [AllowAny()]  # Requerir autenticación para otras acciones
+    def get_queryset(self):
+        #Si el usuario "es Superuser" muestra  todos los Usuarios.
+        if self.request.user.is_superuser:
+            return User.objects.all()
+        return User.objects.filter(id=self.request.user.id) #Si no es superuser, muestra solo su propio usuario
 
 class StudentViewSet(viewsets.ModelViewSet):
     #permission_classes = [IsAuthenticated] #protege la vista con autenticacion
