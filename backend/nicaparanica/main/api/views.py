@@ -66,8 +66,6 @@ class MatriculaViewSet(viewsets.ModelViewSet):
             return Matricula.objects.filter(id_std=user.student_profile)
 
         return Matricula.objects.none()
-    
- 
 
 class NotaViewSet(viewsets.ModelViewSet):
     queryset = Nota.objects.all() 
