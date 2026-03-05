@@ -28,11 +28,10 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'password', 'confirm_password', 'email', 'is_active', 'is_superuser']
+        fields = ['id', 'username', 'password', 'confirm_password', 'email', 'is_active']
         extra_kwargs = {
             'password': {'write_only': True},
-            'confirm_password': {'write_only': True},
-            'is_superuser': {'default': False}
+            'confirm_password': {'write_only': True}
         }
 
     def validate(self, data):
@@ -48,6 +47,8 @@ class UserSerializer(serializers.ModelSerializer):
 class StudentSerializer(serializers.ModelSerializer):
     # Exponemos también el email del usuario vinculado
     user_email = serializers.EmailField(source="user.email", read_only=True)
+    # Añadimos este campo para obtener el texto legible
+    gender_display = serializers.CharField(source="get_gender_display", read_only=True)
 
     class Meta:
         model = Student
@@ -60,8 +61,9 @@ class StudentSerializer(serializers.ModelSerializer):
             "fecha_nac",
             "city_std",
             "gender",
+            "gender_display",
             "is_active",
-            "user",         # 👈 importante para vincular al usuario
+            "user",         #importante para vincular al usuario
         ]
 
 class TutorSerializer(serializers.ModelSerializer):
