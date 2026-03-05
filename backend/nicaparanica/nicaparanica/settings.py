@@ -84,12 +84,12 @@ WSGI_APPLICATION = 'nicaparanica.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': config('DB_NAME'),
         'USER': config('DB_USER'),
         'PASSWORD': config('DB_PASSWORD'),
         'HOST': config('DB_HOST', default='localhost'),
-        'PORT': config('DB_PORT', default= '3306'),
+        'PORT': config('DB_PORT', default= '5432'),
     }
 }
 
@@ -143,9 +143,9 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ),
 
-     #Esta línea obliga a que todas las vistas requieran autenticación por defecto 
+    #Esta línea obliga a que todas las vistas requieran autenticación por defecto 
 
-     'DEFAULT_PERMISSION_CLASSES': (
+    'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
         #'rest_framework.permissions.AllowAny',
     ) 
