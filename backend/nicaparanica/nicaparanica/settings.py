@@ -154,7 +154,7 @@ REST_FRAMEWORK = {
 #======================= Tokens mas cortos =======================
 #Search way to keep token alive
 SIMPLE_JWT = {
-    'AUTH_HEADER_TYPES': ('Bearer'),
+    'AUTH_HEADER_TYPES': ('Bearer',),
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
