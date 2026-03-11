@@ -34,6 +34,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=lamb
 
 INSTALLED_APPS = [
     "corsheaders",
+    'django_rest_passwordreset',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -166,3 +167,10 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Vite / React
 ]
 
+# ================== passwordRecovery setting ====================
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_password = config('EMAIL_HOST_PASSWORD')
