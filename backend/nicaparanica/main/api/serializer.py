@@ -74,6 +74,31 @@ class TutorSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class CursoSerializer(serializers.ModelSerializer):
+    def validate_year_curso(self, value):
+        if value < 2000 or value > 2100:
+            raise serializers.ValidationError("El year del curso debe estar entre 2000 y 2100.")
+        return value
+
+    def validate_semestre_curso(self, value):
+        if value not in (1, 2):
+            raise serializers.ValidationError("El semestre del curso debe ser 1 o 2.")
+        return value
+
+    def validate_creditos_curso(self, value):
+        if value <= 0:
+            raise serializers.ValidationError("Los créditos del curso deben ser mayores que cero.")
+        return value
+
+    def validate_book_precio(self, value):
+        if value is not None and value < 0:
+            raise serializers.ValidationError("El precio del libro no puede ser negativo.")
+        return value
+
+    def validate_examen_costo(self, value):
+        if value is not None and value < 0:
+            raise serializers.ValidationError("El costo del examen no puede ser negativo.")
+        return value
+
     class Meta:
         model = Curso
         fields = '__all__'
@@ -103,6 +128,22 @@ class MatriculaSerializer(serializers.ModelSerializer):
             "estado",
         ]
 
+    def validate_semestre(self, value):
+        if value not in (1, 2):
+            raise serializers.ValidationError("El semestre de matrícula debe ser 1 o 2.")
+        return value
+
+    def validate(self, attrs):
+        id_std = attrs.get("id_std")
+        id_curso = attrs.get("id_curso")
+        semestre = attrs.get("semestre")
+        existing = Matricula.objects.filter(id_std=id_std, id_curso=id_curso, semestre=semestre)
+        if self.instance:
+            existing = existing.exclude(pk=self.instance.pk)
+        if existing.exists():
+            raise serializers.ValidationError("Ya existe una matrícula para este estudiante, curso y semestre.")
+        return attrs
+
 class NotaSerializer(serializers.ModelSerializer):
     id_std = serializers.IntegerField(source="id_matricula.id_std.id_std", read_only=True)
     first_name = serializers.CharField(source="id_matricula.id_std.first_name", read_only=True)
@@ -120,3 +161,10 @@ class NotaSerializer(serializers.ModelSerializer):
             "parcial_2",
             "examen_final",
         ]
+
+    def validate(self, attrs):
+        for field in ("parcial_1", "parcial_2", "examen_final"):
+            value = attrs.get(field)
+            if value is not None and (value < 0 or value > 100):
+                raise serializers.ValidationError({field: "La nota debe estar entre 0 y 100."})
+        return attrs
